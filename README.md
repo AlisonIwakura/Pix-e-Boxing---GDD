@@ -101,55 +101,367 @@ Isso previne:
             
 ---
 
-# 🖥 4. Stack Tecnológica
+# 🖥 2.1 Frontend — Unity WebGL
 
-## Frontend
+O frontend foi desenvolvido utilizando **Unity Engine**, com exportação para **WebGL**, permitindo execução direta em navegadores modernos.
+
+Responsabilidades do cliente:
+
+- Renderização da interface de usuário (UI)
+- Instanciamento de personagens através de **Prefabs**
+- Feedback visual de combate
+- Exibição do lobby multiplayer
+- Comunicação em tempo real com o backend
 
 Tecnologias utilizadas:
 
 - Unity Engine
-- WebGL Build
 - C#
+- WebGL Build
 - Canvas UI
-- Prefabs dinâmicos
-
-Responsabilidades do cliente:
-
-- renderização da interface
-- animações de combate
-- feedback visual
-- gerenciamento de estado local
-- comunicação com backend via WebSockets
+- Prefab System
 
 ---
 
-## Backend
+# ⚙ 2.2 Backend — Node.js + Socket.IO
 
-Tecnologias:
+O backend foi desenvolvido utilizando **Node.js**, com comunicação em tempo real através de **WebSockets (Socket.IO)**.
 
-- Node.js
-- Express
-- Socket.IO
+O servidor atua como **autoridade central do jogo**, sendo responsável por:
 
-Responsabilidades do servidor:
+- matchmaking entre jogadores
+- validação de saldo
+- cálculo de combate
+- controle da economia
+- sincronização multiplayer
 
-- matchmaking PvP
-- validação de ações do jogador
-- cálculo de dano
-- controle de economia
-- sincronização de estados multiplayer
-- proteção contra manipulação do cliente
+Principais funções do backend:
+
+Matchmaking PvP
+Validação de apostas
+Cálculo de dano
+Controle de economia
+Sincronização de estados
+Gerenciamento de salas
+
+
+
+Esse modelo impede que o cliente manipule resultados de combate ou transações.
 
 ---
 
-## Banco de Dados
+# 🗄 2.3 Camada de Dados — MySQL
+
+A persistência de dados é realizada através de **MySQL**, utilizando um esquema **normalizado** para garantir integridade e consistência.
+
+Principais tabelas do sistema:
+
+users
+wallets
+characters
+character_attributes
+transactions
+pvp_matches
+gacha_rolls
+
+
+
+Dados armazenados incluem:
+
+- saldo de jogadores
+- atributos de personagens
+- histórico de combates
+- registros de transações
+
+---
+
+# 💰 3. ECOSSISTEMA ECONÔMICO (TOKENOMICS)
+
+Um dos diferenciais do projeto é o **modelo econômico híbrido**, que combina:
+
+- mecânica **Gacha (sorteio de personagens)**
+- sistema **PvP Stake (apostas entre jogadores)**
+- progressão **PvE com recompensas**
+
+O objetivo é criar um sistema onde exista equilíbrio entre:
+
+- geração de ativos
+- consumo de recursos
+- competitividade entre jogadores
+
+---
+
+# 🎲 3.1 Algoritmo de Raridade
+
+Os personagens possuem **raridade**, que influencia diretamente seus atributos e desempenho em combate.
+
+A raridade não é apenas estética — ela impacta matematicamente os cálculos realizados pelo servidor.
+
+### Fórmula de Cálculo
+
+AtributoFinal = AtributoBase × MultiplicadorRaridade
+
+
+### Exemplo
+
+Personagem:
+
+Força Base = 50
+Stamina Base = 40
+Raridade = Místico
+Multiplicador = 2.00x
+
+
+Isso torna personagens raros **ativos estratégicos de alto valor no ecossistema do jogo**.
+
+---
+
+# 📊 Tabela de Raridades
+
+| Raridade | Multiplicador |
+|--------|--------|
+Comum | 1.00x |
+Raro | 1.25x |
+Épico | 1.50x |
+Lendário | 1.75x |
+Místico | 2.00x |
+
+---
+
+# 📈 3.2 Fluxo de Receita e Retenção
+
+A economia do jogo possui três principais mecanismos de monetização.
+
+---
+
+## Revelação de Personagens (Gacha)
+
+
+Valor: R$ 3,00
+
+
+Função:
+
+- geração de novos personagens
+- criação de ativos no ecossistema
+
+---
+
+## PvP Stake
+
+Jogadores podem disputar partidas **apostando valores entre si**.
+
+O sistema aplica uma taxa operacional.
+
+
+
+Isso gera fluxo de caixa para manutenção da infraestrutura.
+
+---
+
+## Ticket de Aventura
+
+Modo PvE pago com recompensas.
+
+
+
+
+Objetivo:
+
+- incentivar progressão
+- incentivar upgrade de personagens
+- criar consumo econômico no sistema
+
+---
+
+# 🎮 4. MODOS DE OPERAÇÃO
+
+O jogo possui três modos principais de interação.
+
+---
+
+# 🌐 4.1 Lobby Social & Chat
+
+O lobby funciona como um **ambiente social multiplayer**, onde jogadores podem interagir antes das partidas.
+
+Recursos:
+
+- instanciamento global de jogadores
+- sincronização de transformadas
+- visualização de personagens
+- chat em tempo real
 
 Tecnologia utilizada:
 
-- MySQL
-
-Estrutura normalizada para garantir consistência dos dados.
-
-Principais tabelas:
+WebSockets (Socket.IO)
 
 
+Cada jogador é representado por um **Prefab sincronizado no ambiente 3D**.
+
+---
+
+# ⚔ 4.2 Matchmaking PvP (1v1)
+
+O modo PvP permite confrontos diretos entre jogadores.
+
+O sistema utiliza **salas privadas criadas dinamicamente**.
+
+Fluxo de matchmaking:
+
+
+↓
+Servidor busca adversário compatível
+↓
+Criação de sala PvP
+↓
+Execução da luta
+↓
+Servidor valida o resultado
+↓
+Distribuição de prêmio
+
+Critérios de matchmaking incluem:
+
+- estabilidade de conexão
+- faixa de aposta
+- disponibilidade de jogadores
+
+---
+
+# 🧭 4.3 Modo Aventura (PvE Progressivo)
+
+O modo PvE utiliza um sistema baseado em **ondas de inimigos (waves)**.
+
+Estrutura do modo:
+
+
+10 estágios progressivos
+
+
+
+Cada estágio aumenta:
+
+- dificuldade
+- vida dos inimigos
+- dano recebido
+
+O objetivo é chegar ao **boss final**.
+
+Recompensa máxima:
+
+
+R$ 10,00
+
+Esse modo incentiva:
+
+- upgrade de personagens
+- consumo de tickets
+- progressão do jogador
+
+---
+
+# 🔒 5. SEGURANÇA E INTEGRIDADE
+
+O sistema foi projetado priorizando **segurança transacional** e **integridade de dados**.
+
+Medidas aplicadas:
+
+### Servidor Autoritativo
+
+O cliente **não pode decidir resultados de combate**.
+
+Todas as decisões são tomadas pelo servidor.
+
+---
+
+### Validação de Transações
+
+Cada operação financeira passa por:
+
+
+verificação de saldo
+registro de log
+confirmação no banco
+
+
+---
+
+### Registro de Logs
+
+Logs armazenados incluem:
+
+combates
+transações
+revelações de personagens
+resultados PvP
+
+
+
+---
+
+# 🚀 6. INFRAESTRUTURA
+
+Infraestrutura atual do projeto:
+
+
+Linux VPS
+Nginx
+Node.js
+MySQL
+Unity WebGL
+
+
+
+
+Fluxo de deploy:
+
+Nginx
+↓
+Node.js Application
+↓
+MySQL Database
+
+
+O build do Unity WebGL é servido como **conteúdo estático via Nginx**.
+
+---
+
+# 📊 7. ESCALABILIDADE
+
+A arquitetura permite futuras melhorias como:
+
+- cluster Node.js
+- Redis para sessões
+- matchmaking distribuído
+- microserviços
+- balanceamento de carga
+
+---
+
+# 🧾 8. CONCLUSÃO TÉCNICA
+
+O projeto **Pix e Boxing** demonstra a viabilidade de aplicações **WebGL multiplayer complexas**, suportadas por uma infraestrutura **Full Stack moderna**.
+
+Os pilares técnicos da aplicação incluem:
+
+- arquitetura servidor autoritativo
+- economia integrada ao gameplay
+- comunicação multiplayer em tempo real
+- persistência segura de dados
+
+A segurança do saldo dos jogadores e a precisão do algoritmo de raridade foram tratados como prioridades centrais no desenvolvimento do sistema.
+
+---
+
+# ✍ Autor
+
+**Alison Tiago Lima da Paixão**  
+Desenvolvedor Full Stack & Analista Computacional
+
+Especialidades:
+
+- Desenvolvimento de Jogos
+- Arquitetura Multiplayer
+- WebGL Applications
+- Backend para Games
+- Infraestrutura Full Stack
